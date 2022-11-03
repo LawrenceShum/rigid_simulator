@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="可视化">
+      <UniqueIdentifier>{fb4092ea-c780-45bb-bcbb-05d0af835f8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="刚体">
+      <UniqueIdentifier>{099b7e05-3aba-4cda-beb8-c6e9d75f041a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\camera.h">
+      <Filter>可视化</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader_m.h">
+      <Filter>可视化</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rigid\quaternion.h">
+      <Filter>刚体</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rigid\rigid_body.cuh">
+      <Filter>刚体</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rigid\rigid_geometry.cuh">
+      <Filter>刚体</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rigid\cuda_header.cuh">
+      <Filter>刚体</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rigid\global.h">
+      <Filter>刚体</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\fragment_shader.fs">
+      <Filter>可视化</Filter>
+    </None>
+    <None Include="src\fragment_shader_1.fs">
+      <Filter>可视化</Filter>
+    </None>
+    <None Include="src\vertex_shader.vs">
+      <Filter>可视化</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp">
+      <Filter>可视化</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\learnOpenGL\openGL\glad\src\glad.c">
+      <Filter>可视化</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rigid\quaternion.cpp">
+      <Filter>刚体</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="src\rigid\rigid_body.cu">
+      <Filter>刚体</Filter>
+    </CudaCompile>
+  </ItemGroup>
+</Project>
