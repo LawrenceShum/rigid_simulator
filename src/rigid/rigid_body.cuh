@@ -41,7 +41,11 @@ private:
 	void rotational_move();
 
 	//¹ØÓÚÅö×²(penalty force)
-
+	void detect_collision_ground();
+	void detect_collision_left();
+	void detect_collision_right();
+	void detect_collision_back();
+	void detect_collision_front();
 
 public:
 	Rigid_Body(double density, const std::string mesh_file_path)

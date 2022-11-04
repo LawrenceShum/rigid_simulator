@@ -20,9 +20,11 @@
     <ClInclude Include="src\shader_m.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="fragment_shader_2.fs" />
     <None Include="src\fragment_shader.fs" />
     <None Include="src\fragment_shader_1.fs" />
     <None Include="src\vertex_shader.vs" />
+    <None Include="src\vertex_shader_1.vs" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\learnOpenGL\openGL\glad\src\glad.c" />

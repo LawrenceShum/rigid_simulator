@@ -124,13 +124,6 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 
 void move_bunny(double* vertices, int num, unsigned int& VBO)
 {
-	//for (int i = 0; i < num; i++)
-	//{
-	//	if (!(i % 3))
-	//	{
-	//		vertices[i] -= 0.001;
-	//	}
-	//}
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(double) * num, vertices, GL_DYNAMIC_DRAW);
 	glVertexAttribPointer(0, 3, GL_DOUBLE, GL_FALSE, 3 * sizeof(double), (void*)0);
@@ -174,12 +167,47 @@ int main()
 
 	Shader shaderProgram("src/vertex_shader.vs", "src/fragment_shader.fs");
 	Shader shaderProgram_1("src/vertex_shader.vs", "src/fragment_shader_1.fs");
+	Shader shaderProgram_2("src/vertex_shader_1.vs", "src/fragment_shader_2.fs");
 
 	double* bunny = new double[num_vertices * 3];
 	int* indices = new int[num_faces * 3];
 	rigid.copy_to_opengl_buffer(bunny);
 	rigid.access_indices(indices);
 	
+	double ground[12] = {
+		-1, -0.5, -1,
+		-1, -0.5, 1,
+		1, -0.5, 1,
+		1, -0.5, -1 };
+	int ground_element[6] = {
+		0, 1, 2,
+		2, 3, 0
+	};
+	//unsigned int instanceVBO;
+	//glGenBuffers(1, &instanceVBO);
+	//glBindBuffer(GL_ARRAY_BUFFER, instanceVBO);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(double) * 30, &translation[0], GL_STATIC_DRAW);
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	//这是地面
+	unsigned int VBO_GROUND, VAO_GROUND, EBO_GROUND;
+	glGenVertexArrays(1, &VAO_GROUND);
+	glGenBuffers(1, &VBO_GROUND);
+	glGenBuffers(1, &EBO_GROUND);
+	glBindVertexArray(VAO_GROUND);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO_GROUND);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(double) * 4 * 3, &ground[0], GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_GROUND);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * 2 * 3, &ground_element[0], GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_DOUBLE, GL_FALSE, 3 * sizeof(double), (void*)0);
+	//解绑VBO
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	//解绑VAO
+	glBindVertexArray(0);
+
+
+	//这是兔子
 	unsigned int VBO, VAO, EBO;
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
@@ -193,14 +221,19 @@ int main()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * num_faces * 3, indices, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_DOUBLE, GL_FALSE, 3 * sizeof(double), (void*)0);
 	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_DOUBLE, GL_FALSE, 3 * sizeof(double), (void*)0);
+	//glEnableVertexAttribArray(1);
+	//glBindBuffer(GL_ARRAY_BUFFER, instanceVBO);
+	//glVertexAttribPointer(1, 3, GL_DOUBLE, GL_FALSE, 3 * sizeof(double), (void*)0);
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+	//glVertexAttribDivisor(1, 1);
 
 	//解绑VBO
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	//解绑VAO
 	glBindVertexArray(0);
-	
+
 	while (!glfwWindowShouldClose(window))
 	{
 		// per-frame time logic
@@ -236,6 +269,7 @@ int main()
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, num_faces * 3, GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
 
 		shaderProgram_1.use();
 		modelLoc = glGetUniformLocation(shaderProgram_1.ID, "model");
@@ -248,6 +282,20 @@ int main()
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, num_faces * 3, GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
+
+		shaderProgram_2.use();
+		modelLoc = glGetUniformLocation(shaderProgram_2.ID, "model");
+		viewLoc = glGetUniformLocation(shaderProgram_2.ID, "view");
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
+		shaderProgram_2.setMat4("projection", projection);
+		shaderProgram_2.setMat4("view", view);
+		shaderProgram_2.setMat4("model", model);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		glBindVertexArray(VAO_GROUND);
+		glDrawElements(GL_TRIANGLES, 2 * 3, GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

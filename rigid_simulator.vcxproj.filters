@@ -41,6 +41,12 @@
     <None Include="src\vertex_shader.vs">
       <Filter>可视化</Filter>
     </None>
+    <None Include="fragment_shader_2.fs">
+      <Filter>可视化</Filter>
+    </None>
+    <None Include="src\vertex_shader_1.vs">
+      <Filter>可视化</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">

@@ -37,7 +37,7 @@ double3 operator% (double3 a, double3 b)
 {
 	double3 result;
 	result.x = a.y * b.z - a.z * b.y;
-	result.y = a.x * b.z - a.z * b.x;
+	result.y = a.z * b.x - a.x * b.z;
 	result.z = a.x * b.y - a.y * b.x;
 	return result;
 }

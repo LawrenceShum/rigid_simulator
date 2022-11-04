@@ -53,6 +53,7 @@ public:
 	//初始点
 	//reference的
 	thrust::host_vector<double> vertices;
+	double* vertices_in_cpu;
 	//reference的
 	double* vertices_in_gpu;
 	//更新的
